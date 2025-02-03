@@ -1,29 +1,60 @@
-import matplotlib
 import matplotlib.pyplot as plt
 import re
 import math
-from sympy import *
+import numpy as np
+from sympy import symbols, sympify, parse_expr, lambdify, init_printing
 
-x, y= symbols('x y')
 init_printing(use_unicode=True)
 
-dydx = input(prompt='please input the ODE')
-dydx = str(dydx)
-dydx = re.sub('t','x',dydx.lower()).sub('[prsPRS]', 'y')
+# Get the ODE input from the user and give instructions
+dydx = input("Type the ODE using x and y as ind and dep vars, + for adding, - for subtracting, / for dividing, * for multiplication, ** for exponentiation, capturing any isolated expressions within parentheses: ")
+
+# Simplify and display to user
+try:
+    expressionOutput = sympify(dydx)
+    print("Sympified expression:", expressionOutput)
+except (SyntaxError, TypeError) as e:
+    print(f"Invalid input: {e}")
+    exit()
+
+# Define variables and evaluate the expression with these in mind
+try:
+    x, y = symbols('x y')
+    expression = parse_expr(dydx, {"x": x, "y": y})
+except (SyntaxError, TypeError) as e:
+    print(f"Invalid input: {e}")
+    exit()
+
+# Convert into callable function (emulates lambda function but converts to numpy uses math otherwise)
+try:
+    f = lambdify((x, y), expression, 'numpy')
+except Exception as e:
+    print(f"Error converting the expression to a function: {e}")
+    exit()
+
+pointSlope = []
+x_range = np.arange(-10, 11)
+y_range = np.arange(-10, 11)
+
+for i in x_range:
+    for j in y_range:
+        try:
+            slope = f(i, j)
+        except Exception as e:
+            print(f"Error evaluating the function at ({i}, {j}): {e}")
+            continue
+        pointSlope.append((i, j, slope))
 
 
+plt.figure(figsize=(8, 6))
+for (i, j, slope) in pointSlope:
+    dx = 0.5
+    dy = slope * dx
+    plt.arrow(i, j, dx, dy, head_width=0.2, head_length=0.2, fc='blue', ec='blue')
 
-# somehow correlate string combinations using regex in order to conduct arithmetic on each point
-# get every instance of the equation that isn't y or x and convert it to a math module variable (e, pi, inf, nan, etc.)
-# every instance of two atrics should correlate to the power function 
-# every instance of one astrics or paranthesis will indicate multiplication
-# parantheses close equations so that they're done before outside 
-# every instance of a slash should divide left to right or use paranthesis
-# follow pemdas rule to computer correctly 
-
-# give a zipped collection of y's and x's and dydx's, compute each value of dy/dx and save that in a new list where y, x, and dy/dx value are saved
-
-# plot each point in the list on the same coordinate plane and output to user 
-# over a range of t and as delta t is approaching 0 but not too small since lots of compute power
-
-print("Here's your plotted slope field")
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Slope Field')
+plt.grid(True)
+plt.legend(["Slope Field"])
+plt.show()
