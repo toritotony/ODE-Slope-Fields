@@ -1,11 +1,17 @@
 import matplotlib
 import matplotlib.pyplot as plt
-import regex as re
+import re
 import math
+from sympy import *
+
+x, y= symbols('x y')
+init_printing(use_unicode=True)
 
 dydx = input(prompt='please input the ODE')
+dydx = str(dydx)
+dydx = re.sub('t','x',dydx.lower()).sub('[prsPRS]', 'y')
 
-dydx = str(dydx).lower().replace('t', 'x').replace('p', 'y')
+
 
 # somehow correlate string combinations using regex in order to conduct arithmetic on each point
 # get every instance of the equation that isn't y or x and convert it to a math module variable (e, pi, inf, nan, etc.)
