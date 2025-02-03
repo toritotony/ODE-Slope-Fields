@@ -1,0 +1,4 @@
+matplotlib
+re
+numpy
+sympy
