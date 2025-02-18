@@ -9,8 +9,12 @@ init_printing(use_latex=True)
 dydx = input("Type the ODE using x and y as independent and dependent vars, (+) for adding, (-) for subtracting, (/) for dividing, (*) for multiplication, (** or ^) for exponentiation, (e) for exponential, and any trigonometric functions as spelled, be careful with parentheses for isolating expressions: ")
 
 # Substitute e^x with exp(x) for sympy's exp function to work with sympy's sympify function
-pattern = r'\b[eE](?:\^|\*\*)(\S+)'
-dydx = re.sub(pattern, r'exp(\1)', dydx)
+pattern1 = r'\b[eE](?:\^|\*\*)(\S+)'
+dydx = re.sub(pattern1, r'exp(\1)', dydx)
+
+# Substitute e with exp(1) for sympy's exp function to work with sympy's sympify function
+pattern2 = r'\b[eE]\b(?!\^|\*\*)'
+dydx = re.sub(pattern2, r'exp(1)', dydx)
 print(f"Altered expression: {dydx}")
 
 # Simplify and display to user
