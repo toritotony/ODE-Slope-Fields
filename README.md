@@ -18,9 +18,12 @@ Clone the repository available here [ODE Slope Field Plotter](https://github.com
 3. Input the ordinary differential equation (dy/dx) 
 4. Allow program to compute tangent line for entire grid and display plot for you to observe and potentially download
 
+## Systems of Two Autonomous ODEs
+Newly added feature with system-slope-field.py script which takes two inputs representing dy/dt and dx/dt, and plots a slope field using Euler's method across a 10x10 grid on xy-plane
+
 ## Noteable Code Snippet
 
-### Compute and append points and slopes to array for plotting ('slope-field.py')
+### Compute and append points and slopes to array for plotting ('slope-field.py') (similar concept with 'system-slope-field')
 ```
 for i in x_range:
     for j in y_range:
