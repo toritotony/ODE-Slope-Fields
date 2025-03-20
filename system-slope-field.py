@@ -48,6 +48,29 @@ except Exception as e:
     print(f"Error converting the expression to a function: {e}")
     exit()
 
+
+# -----------------------------
+# Euler Integration for Initial Condition (1, 0)
+# -----------------------------
+dt = 0.1        
+num_steps = 100  
+t = 0.0          
+x_current = 1.0  
+y_current = 0.0  
+
+print("\nEstimates for the initial condition (1, 0):")
+for step in range(num_steps):
+    dx = f1(x_current, y_current)
+    dy = f2(x_current, y_current)
+    x_current += dx * dt
+    y_current += dy * dt
+    t += dt  
+    print(f"Step {step+1} (t = {t:.2f}): x = {x_current:.4f}, y = {y_current:.4f}")
+
+
+# -----------------------------
+# Plotting the Slope Field
+# -----------------------------
 pointSlope = []
 x_range = np.arange(-10, 11)
 y_range = np.arange(-10, 11)
@@ -57,7 +80,6 @@ for i in x_range:
         try:
             slope1 = f1(i, j)
             slope2 = f2(i, j)
-            #vector = np.sqrt(slope1**2 + slope2**2)
             pointSlope.append((i, j, slope1, slope2))
         except Exception as e:
             print(f"Error evaluating the function at ({i}, {j}): {e}")
@@ -67,7 +89,7 @@ for i in x_range:
 try: 
     plt.figure(figsize=(8, 6))
     dt = 0.5
-    for (i, j, slope1, slope2) in pointSlope:
+    for n, (i, j, slope1, slope2) in enumerate(pointSlope):
         dx = slope1 * dt
         dy = slope2 * dt
         plt.arrow(i, j, dx, dy, head_width=0.2, head_length=0.2, fc='blue', ec='blue')
