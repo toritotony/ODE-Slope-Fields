@@ -52,7 +52,7 @@ except Exception as e:
 # -----------------------------
 # Euler Integration for Initial Condition (1, 0)
 # -----------------------------
-dt = 0.1        
+dt = 0.5    
 num_steps = 100  
 t = 0.0          
 x_current = 1.0  
@@ -65,7 +65,8 @@ for step in range(num_steps):
     x_current += dx * dt
     y_current += dy * dt
     t += dt  
-    print(f"Step {step+1} (t = {t:.2f}): x = {x_current:.4f}, y = {y_current:.4f}")
+    unitDistance = np.sqrt(x_current**2 + y_current**2)
+    print(f"Step {step+1} (t = {t:.2f}): x = {x_current:.4f}, y = {y_current:.4f} and distance is {unitDistance:.4f}")
 
 
 # -----------------------------
